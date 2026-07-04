@@ -13,6 +13,11 @@ tags: [isbrs/integrity]
 
 Newest first. One line per version per document (SOP-DOCS.md §4).
 
+## 2026-07-04 — signed
+- constitution-ld **1.0.0** — SIGNED by EB. Table-read passed by a
+  fresh reader on 2026-07-04; the law reads as written.
+- constitution-ld 0.9.1 — L5 clarified (creation free; freeze at EB's
+  acceptance) — found by the table-read.
 ## 2026-07-03 — the founding day
 - sop-docs **0.2.1** — clarified: the root `#isbrs` is implicit via tag
   nesting; never written explicitly; the `isbrs:` field is the canonical

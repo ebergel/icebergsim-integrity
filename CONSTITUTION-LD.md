@@ -3,17 +3,17 @@ id: constitution-ld
 title: Constitution — ISM_LD_beta
 isbrs: integrity
 kind: law
-status: draft
-version: 0.9.0
+status: signed
+version: 1.0.0
 date: 2026-07-03
-updated: 2026-07-03
-tags: [isbrs/integrity]
+updated: 2026-07-04
+tags:
+  - isbrs/integrity
 ---
 
 # CONSTITUTION-LD.md — Constitution for ISM_LD_beta
 
-**DRAFT v0.9 — binds on EB's signature (§7); signing sets 1.0.0.
-Pre-signature amendments free; after, Gate G1 only. History: CHANGELOG.md.**
+**v1.0.0 — SIGNED 2026-07-04. Amendments only through Gate G1. History: CHANGELOG.md.**
 
 Primary reader: Claude Code (CCd). Read this file at the start of every
 session. It is short on purpose: a hard shell around the core, declared
@@ -72,7 +72,7 @@ unless the statistic is exact by construction.)*
 (regenerate allocation from committed seed → compare → report) is small,
 isolated, integer-exact, and held to the strictest standard in the codebase:
 exhaustive tests, no floating point in the comparison path, full manifest.
-Any change to it crosses Gate G1. It is the floor everything else stands on.
+Building its first version is free creation inside the shell; the freeze begins when EB accepts it — from that moment, any change to it crosses Gate G1. It is the floor everything else stands on.
 
 **L6 — Transparency, inherited.** No output depends on hidden state. Every
 result reproduces from: input definition + seed + RNG algorithm + versions +
@@ -229,6 +229,6 @@ law or stop rule is in view, then S2.
 
 ## 7. Signature
 
-EB: ______________________  Date: ____________
+EB: Eduardo Bergel Date: 2026-07-04
 
 Signed = v1.0, binding. Until then: draft, non-binding.
