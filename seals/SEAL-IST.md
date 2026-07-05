@@ -3,11 +3,12 @@ id: seal-ist-1
 title: Seal — International Stroke Trial (IST-1) database
 isbrs: integrity
 kind: seal
-status: pending
+status: active
 role: calibration
 date: 2026-07-04
 updated: 2026-07-04
-tags: [isbrs/integrity]
+tags:
+  - isbrs/integrity
 ---
 
 # SEAL-IST.md — International Stroke Trial (IST-1), version 2
