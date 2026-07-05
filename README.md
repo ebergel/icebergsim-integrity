@@ -4,6 +4,7 @@ title: README — IcebergSim Integrity
 isbrs: integrity
 kind: readme
 status: active
+version: 1.0.0
 date: 2026-07-03
 updated: 2026-07-03
 tags: [isbrs/integrity]
