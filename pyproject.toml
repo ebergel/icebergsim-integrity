@@ -1,0 +1,33 @@
+[project]
+name = "icebergsim-integrity"
+version = "0.1.0"
+description = "ISM_LD_beta — trial integrity instrument. Governed by CONSTITUTION-LD.md."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "icebergsim",
+    "numpy>=2.0",
+    "scipy>=1.13",
+]
+
+[tool.uv.sources]
+# L9: the ancestor is consumed as a dependency, never forked or vendored.
+# uv.lock pins the exact upstream commit.
+icebergsim = { git = "https://github.com/ebergel/icebergsim-rct" }
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.4",
+    "mypy>=1.10",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/icebergsim_integrity"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
