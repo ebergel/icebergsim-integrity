@@ -13,6 +13,14 @@ tags: [isbrs/integrity]
 
 Newest first. One line per version per document (SOP-DOCS.md §4).
 
+## 2026-07-05 — session zero (B5)
+- icebergsim-integrity **0.1.0** — package born: pyproject, src layout,
+  pytest wired; icebergsim-rct consumed as a git dependency, pinned in
+  uv.lock at `5d439b2a` (L9).
+- spike-b5-umbilical — umbilical spike verdict **(c)**: icebergsim-rct
+  has no row-level form, internal or exposed (exact multinomial collapse,
+  SPEC §6.3); inventory for B6 recorded in sessions/SESSION-0-SPIKE-B5.md.
+
 ## 2026-07-04 — signed
 - constitution-ld **1.0.0** — SIGNED by EB. Table-read passed by a
   fresh reader on 2026-07-04; the law reads as written.
