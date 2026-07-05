@@ -14,6 +14,11 @@ tags: [isbrs/integrity]
 Newest first. One line per version per document (SOP-DOCS.md §4).
 
 ## 2026-07-05 — session zero (B5)
+- seed kernel **0.1.0** — **ACCEPTED by EB**; the freeze begins (L5).
+  From now on any change to seedkernel.py crosses Gate G1. Enforced
+  executably: tests/constitutional/test_seed_kernel_freeze.py pins the
+  module's content hash
+  (`b01a1fcf533b13a5b6e79e68f4ddc14d37adf0cad735d9ed1cc62d0b8cd2e61d`).
 - anomaly-output schema **0.2.0** — hardened after the in-session
   adversarial review (21 agents, 5 lenses; 12 findings confirmed, 4
   refuted; kernel math lens: zero findings): banned vocabulary moved to

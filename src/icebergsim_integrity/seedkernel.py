@@ -31,9 +31,10 @@ point exists in this module, on the generation path or the comparison
 path. Strictest standard in the codebase: exhaustive tests in
 tests/kernel/, golden pins against stream drift.
 
-L5 (as amended): this first version is free creation inside the shell;
-the freeze begins when EB accepts it. From that moment, any change here
-crosses Gate G1.
+L5: ACCEPTED by EB on 2026-07-05 — FROZEN. Any change to this module
+crosses Gate G1. The freeze is enforced by
+tests/constitutional/test_seed_kernel_freeze.py, which pins this file's
+content hash; a red freeze test means the floor moved without EB's yes.
 """
 from __future__ import annotations
 
