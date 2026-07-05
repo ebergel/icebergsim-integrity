@@ -14,6 +14,43 @@ from __future__ import annotations
 import enum
 from dataclasses import dataclass
 
+from icebergsim_integrity.vocabulary import banned_tokens_in
+
+# No pair key may shadow the constrained schema fields: a details entry
+# named "regime" would become a second regime column in an L11 export.
+_RESERVED_KEYS = frozenset({"regime", "statistic", "reference", "false_alarm"})
+
+
+def _validate_name(text: object, context: str) -> str:
+    if not isinstance(text, str) or not text:
+        raise ValueError(f"{context} must be a non-empty string")
+    if hits := banned_tokens_in(text):
+        raise ValueError(f"{context} {text!r} carries banned vocabulary: {hits}")
+    return text
+
+
+def _validate_pairs(
+    pairs: object, context: str
+) -> tuple[tuple[str, int | float | str], ...]:
+    if not isinstance(pairs, tuple):
+        raise TypeError(f"{context} must be a tuple of (name, value) pairs")
+    for entry in pairs:
+        if not isinstance(entry, tuple) or len(entry) != 2:
+            raise TypeError(f"{context} entries must be (name, value) pairs")
+        key, value = entry
+        _validate_name(key, f"{context} name")
+        if key in _RESERVED_KEYS:
+            raise ValueError(f"{context} name {key!r} shadows a schema field")
+        if isinstance(value, bool) or not isinstance(value, (int, float, str)):
+            raise TypeError(
+                f"{context} value for {key!r} must be int, float or str, never bool"
+            )
+        if isinstance(value, str) and (hits := banned_tokens_in(value)):
+            raise ValueError(
+                f"{context} value for {key!r} carries banned vocabulary: {hits}"
+            )
+    return pairs
+
 
 class Regime(enum.StrEnum):
     """The two regimes of L1. Exactly two; a third value is unconstitutional."""
@@ -30,8 +67,7 @@ class Statistic:
     value: int | float
 
     def __post_init__(self) -> None:
-        if not self.name:
-            raise ValueError("statistic must be named")
+        _validate_name(self.name, "statistic name")
         if isinstance(self.value, bool) or not isinstance(self.value, (int, float)):
             raise TypeError("statistic value must be int or float, never bool")
 
@@ -48,8 +84,8 @@ class ReferenceDistribution:
     parameters: tuple[tuple[str, int | float | str], ...] = ()
 
     def __post_init__(self) -> None:
-        if not self.name:
-            raise ValueError("reference distribution must be named")
+        _validate_name(self.name, "reference distribution name")
+        _validate_pairs(self.parameters, "reference distribution parameter")
 
 
 @dataclass(frozen=True, slots=True)
@@ -102,3 +138,4 @@ class AnomalyResult:
             raise TypeError("reference distribution is mandatory")
         if not isinstance(self.false_alarm, FalseAlarmContext):
             raise TypeError("false-alarm context is mandatory")
+        _validate_pairs(self.details, "detail")

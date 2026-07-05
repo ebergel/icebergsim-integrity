@@ -83,6 +83,66 @@ def test_statistic_value_rejects_bool():
         Statistic(name="example", value=True)
 
 
+# --- L2, at runtime: the string channels cannot carry judgment either ---
+# (These constructions all passed before the Session Zero adversarial
+# review; each one below is a pinned evasion.)
+
+def test_statistic_name_rejects_verdict_vocabulary():
+    with pytest.raises(ValueError):
+        Statistic(name="fraud_probability", value=0.97)
+
+
+def test_reference_name_rejects_verdict_vocabulary():
+    with pytest.raises(ValueError):
+        ReferenceDistribution(name="null_of_no_tampering")
+
+
+def test_detail_keys_reject_verdict_vocabulary():
+    with pytest.raises(ValueError):
+        _minimal_result(details=(("fabrication_score", 1),))
+
+
+def test_detail_string_values_reject_verdict_vocabulary():
+    with pytest.raises(ValueError):
+        _minimal_result(details=(("assessment", "likely fabricated"),))
+
+
+def test_detail_values_reject_bool():
+    with pytest.raises(TypeError):
+        _minimal_result(details=(("seed_is_authentic", True),))
+
+
+def test_detail_keys_cannot_shadow_schema_fields():
+    with pytest.raises(ValueError):
+        _minimal_result(details=(("regime", "screening"),))
+
+
+@pytest.mark.parametrize(
+    "bad",
+    [
+        ((("note",),),),               # not a pair
+        ((("note", 1, 2),),),          # too long
+        (((1, "x"),),),                # non-string key
+        ((("note", object()),),),      # non-scalar value
+        ([("note", 1)],),              # list, not tuple
+    ],
+)
+def test_malformed_details_are_rejected(bad):
+    with pytest.raises((TypeError, ValueError)):
+        _minimal_result(details=bad[0])
+
+
+def test_reference_parameters_validated_like_details():
+    with pytest.raises(TypeError):
+        ReferenceDistribution(
+            name="permutation", parameters=(("data_ok", True),)
+        )
+    with pytest.raises(ValueError):
+        ReferenceDistribution(
+            name="permutation", parameters=(("regime", "third"),)
+        )
+
+
 # --- Frozen pure-core types (L12) ---
 
 def test_results_are_frozen():
