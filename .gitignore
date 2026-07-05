@@ -1,0 +1,16 @@
+# Free iteration lives here; nothing in scratch/ informs a decision (L11)
+scratch/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# macOS
+.DS_Store
