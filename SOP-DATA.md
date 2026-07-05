@@ -128,7 +128,7 @@ ANC-SEAL.md is the reference implementation of this template.
 | Handle | Vault | Design | Role | Status | Sealed |
 |---|---|---|---|---|---|
 | ANC-MOZ | github.com/ebergel/ANCMozambique @ `d27ac54` | Stepped-wedge, 10 clusters × 11 steps, 218,277 visits | EXAM | BLIND (schema + published aggregates only) | 2026-07-03 |
-
+| IST-1 | github.com/ebergel/ist-1-database @ [commit] | 2-arm factorial, aspirin/heparin, 19,435, acute ischaemic stroke | CALIBRATION | ACTIVE | 2026-07-05 |
 *(New rows appended as datasets are sealed. CI may verify: every registry
 row has a seal file, every seal hash is well-formed, and at least one EXAM
 is BLIND.)*
