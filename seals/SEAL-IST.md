@@ -85,19 +85,68 @@ mismatch: STOP.
 
 ---
 
-## 3. The codebook (schema only — to be extracted at fork)
+## 3. The codebook (schema — from IST_variables.csv, ratified against data)
 
-`[FILL AT FORK]` — column names, types, category levels, numeric ranges,
-extracted from the dataset's own documentation (IST publishes a variable
-dictionary). No distributions beyond the already-published Table 1
-aggregates in the 1997 Lancet paper and the 2011 database paper. Tag
-inferred meanings `[INFERRED]` for EB to ratify.
+**Note on dimensions:** the variable dictionary documents **119 variables**; the data file `IST_corrected.csv` has **112 columns**. This 7-column discrepancy is recorded, not hidden — some documented derived variables may be absent, renamed, or reordered in the corrected version. The generator (B6) reconciles against the **actual 112 headers**, not the dictionary. Header order in the data begins: `HOSPNUM, RDELAY, RCONSC, SEX, AGE, RSLEEP, RATRIAL, RCT, RVISINF, RHEP24, RASP3, RSBP, RDEF1…RDEF8, …`.
 
-Note for B6 (the generator): the columns needed are the **baseline**
-covariates (randomisation-time), for estimating the Table 1 joint
-structure. The outcome and follow-up columns are not part of the covariate
-template — they inform the multi-outcome layer separately. The seal
-records the full schema; the generator consumes only the baseline block.
+**For the generator, the baseline (randomisation-time) block is the covariate template.** Outcome and follow-up columns inform the multi-outcome layer separately; derived/prognostic columns (EXPD*) are a bonus sealed prognostic score. Values `9`/`8` are missing codes in several fields (see OCCODE, SET14D). No distributions recorded here beyond published aggregates.
+
+### Randomisation data (baseline — the Table 1 covariate template)
+
+|Variable|Meaning|
+|---|---|
+|`HOSPNUM`|Hospital number|
+|`RDELAY`|Delay between stroke and randomisation (hours)|
+|`RCONSC`|Conscious state (F=fully alert, D=drowsy, U=unconscious)|
+|`SEX`|M=male; F=female|
+|`AGE`|Age (years)|
+|`RSLEEP`|Symptoms noted on waking (Y/N)|
+|`RATRIAL`|Atrial fibrillation (Y/N); not coded for pilot (984 pts)|
+|`RCT`|CT before randomisation (Y/N)|
+|`RVISINF`|Infarct visible on CT (Y/N)|
+|`RHEP24`|Heparin within 24h prior (Y/N)|
+|`RASP3`|Aspirin within 3 days prior (Y/N)|
+|`RSBP`|Systolic BP at randomisation (mmHg)|
+|`RDEF1`–`RDEF8`|Deficits: face, arm/hand, leg/foot, dysphasia, hemianopia, visuospatial, brainstem/cerebellar, other (Y/N/C=can't assess)|
+|`STYPE`|Stroke subtype (TACS/PACS/POCS/LACS/other)|
+|`RDATE`,`RTIME`,`HOURLOCAL`,`MINLOCAL`,`DAYLOCAL`|Randomisation date/time fields|
+|`RXASP`|Trial aspirin allocated (Y/N) — **allocation**|
+|`RXHEP`|Trial heparin allocated (M/L/N) — **allocation**|
+
+### 14-day / discharge treatments and events
+
+`DASP14, DASPLT, DLH14, DMH14, DHH14, ONDRUG, DSCH, DIVH, DAP, DOAC, DGORM, DSTER, DCAA, DHAEMD, DCAREND, DTHROMB` (treatments given); `DMAJNCH(+D/X), DSIDE(+D/X)` (adverse events).
+
+### Final diagnosis of initial event
+
+`DDIAGISC, DDIAGHA, DDIAGUN, DNOSTRK, DNOSTRKX`.
+
+### Recurrent stroke / other events within 14 days
+
+`DRSISC(+D), DRSH(+D), DRSUNK(+D)`; `DPE(+D), DALIVE(+D), DPLACE, DDEAD(+D/C/X)`.
+
+### 6-month follow-up
+
+`FMETHOD, FSOURCE, FDEAD, FLASTD, FDEADD, FDEADC, FDEADX, FRECOVER, FDENNIS, FPLACE, FAP, FOAC`.
+
+### Outcomes and derived variables (the multi-outcome layer)
+
+|Variable|Meaning|
+|---|---|
+|`ID`,`TD`|Death indicator (1/0), time to death/censoring (days)|
+|`ID14`|Death within 14 days (indicator)|
+|`SET14D`|Known dead/alive at 14 days (1/0)|
+|`OCCODE`|Six-month outcome (1=dead, 2=dependent, 3=not recovered, 4=recovered, 8/9=missing)|
+|`STR14`,`ISC14`,`NK14`,`H14`|Any / ischaemic / indeterminate / haemorrhagic stroke within 14 days|
+|`MI14`,`PE14`,`DVT14`,`HTI14`|MI, PE, DVT, haemorrhagic transformation within 14 days|
+|`NCB14`,`TRAN14`|Any / major non-cerebral bleed within 14 days|
+|`EXPD14`,`EXPD6`,`EXPDD`|**Published predicted probabilities** (death@14d, death@6m, death-or-dependency@6m) — a ready-made sealed prognostic score|
+|`DEAD1`–`DEAD8`|Cause-of-death indicators|
+|`TICH`,`TMAJH`|Time to cerebral bleed / major non-cerebral bleed|
+|`CMPLASP`,`CMPLHEP`,`NCCODE`|Compliance (aspirin/heparin)|
+|`COUNTRY`,`CNTRYNUM`|Country code|
+
+_Full per-variable dictionary: `docs/IST_variables.csv` / `docs/IST_variables.pdf` in the mirror. Inferred groupings above are Claude's; EB ratifies. `[INFERRED]` groupings, not license-bearing._
 
 ---
 
