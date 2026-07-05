@@ -31,3 +31,7 @@ packages = ["src/icebergsim_integrity"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true

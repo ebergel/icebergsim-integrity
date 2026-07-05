@@ -17,6 +17,9 @@ Newest first. One line per version per document (SOP-DOCS.md §4).
 - icebergsim-integrity **0.1.0** — package born: pyproject, src layout,
   pytest wired; icebergsim-rct consumed as a git dependency, pinned in
   uv.lock at `5d439b2a` (L9).
+- CI live — `.github/workflows/constitutional.yml`: constitutional tests
+  on every push and PR (plus ruff, mypy). Marking the job *required* is
+  branch protection — EB's platform layer, flagged in the workflow header.
 - integrity-readme **1.0.0** — manifest gains `version`: the constitutional
   suite's first real run flagged it (readme is a versioned kind).
 - spike-b5-umbilical — umbilical spike verdict **(c)**: icebergsim-rct
