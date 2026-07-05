@@ -14,6 +14,20 @@ tags: [isbrs/integrity]
 Newest first. One line per version per document (SOP-DOCS.md §4).
 
 ## 2026-07-05 — session zero (B5)
+- anomaly-output schema **0.2.0** — hardened after the in-session
+  adversarial review (21 agents, 5 lenses; 12 findings confirmed, 4
+  refuted; kernel math lens: zero findings): banned vocabulary moved to
+  a shared module enforced at runtime on every string channel (statistic
+  names, reference names, detail/parameter keys and values) and by the
+  constitutional scan over identifiers, non-docstring string constants
+  and module filenames; details/parameters shape-validated; reserved
+  keys cannot shadow schema fields; ban list pinned in both directions.
+- seed kernel hardening (still 0.1.0, pre-acceptance) — out-of-range
+  reported arm codes now raise instead of inflating the count; golden
+  pins widened (n=20, three arms, block ratio 2:2:1, 128-bit seed);
+  empty report, truncation+alteration additivity, spec-entry type
+  strictness and kernel_version manifest all pinned. CI: interpreter
+  pinned via .python-version.
 - icebergsim-integrity **0.1.0** — package born: pyproject, src layout,
   pytest wired; icebergsim-rct consumed as a git dependency, pinned in
   uv.lock at `5d439b2a` (L9).

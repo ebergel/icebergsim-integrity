@@ -176,8 +176,20 @@ def verify_allocation(
     number of discrepant positions; length differences count position by
     position. Zero means the reported allocation regenerates from the
     committed seed; anything else means it does not.
+
+    Input contract, enforced loudly: every reported entry must be a Python
+    int naming one of the spec's arms (0..k-1). An out-of-range code is a
+    caller error — a mis-mapped dataset, not a comparable allocation — and
+    raises instead of inflating the count.
     """
     checked = tuple(_require_int(v, "reported allocation entry") for v in reported)
+    arms = len(spec.arm_counts or spec.block_ratio or ())
+    for position, code in enumerate(checked):
+        if not 0 <= code < arms:
+            raise ValueError(
+                f"reported allocation entry {code} at position {position} is not "
+                f"an arm code of this spec (0..{arms - 1})"
+            )
     expected = regenerate_allocation(spec)
     overlap = min(len(expected), len(checked))
     discrepant = [i for i in range(overlap) if expected[i] != checked[i]]

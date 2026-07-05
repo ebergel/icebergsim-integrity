@@ -43,6 +43,31 @@ GOLDEN = [
         ),
         (1, 0, 0, 0, 0, 1, 1, 0, 0, 0),
     ),
+    # Larger than any Fisher-Yates bound of 10, so lazy modulo shortcuts
+    # that only diverge at wider bounds cannot survive this pin.
+    (
+        AllocationSpec(algorithm="complete", seed=3, arm_counts=(10, 10)),
+        (1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0),
+    ),
+    (
+        AllocationSpec(algorithm="complete", seed=11, arm_counts=(7, 5, 3)),
+        (0, 0, 0, 1, 0, 0, 2, 1, 0, 1, 1, 0, 2, 2, 1),
+    ),
+    (
+        AllocationSpec(
+            algorithm="permuted_block",
+            seed=13,
+            block_ratio=(2, 2, 1),
+            n_participants=17,
+        ),
+        (0, 2, 1, 1, 0, 0, 1, 0, 1, 2, 0, 1, 2, 1, 0, 0, 1),
+    ),
+    # Committed seeds can be hash-derived and wider than 64 bits; PCG64's
+    # SeedSequence takes arbitrary non-negative ints. Pinned here.
+    (
+        AllocationSpec(algorithm="complete", seed=2**127 + 3, arm_counts=(4, 4)),
+        (0, 0, 0, 1, 1, 0, 1, 1),
+    ),
 ]
 
 
@@ -129,6 +154,7 @@ def test_result_payload_shape():
     assert details["allocation_algorithm"] == "complete"
     assert details["committed_seed"] == 1
     assert details["rng_algorithm"] == "pcg64-raw"
+    assert details["kernel_version"] == "0.1.0"
     assert details["expected_length"] == 6
     assert details["reported_length"] == 6
     assert "first_discrepancy_index" not in details
@@ -174,6 +200,25 @@ def test_padded_report_counts_extra_positions():
     assert dict(result.details)["first_discrepancy_index"] == len(expected)
 
 
+def test_empty_report_counts_every_expected_position():
+    result = verify_allocation(COMPLETE, [])
+    assert result.statistic.value == 6
+    details = dict(result.details)
+    assert details["reported_length"] == 0
+    assert details["first_discrepancy_index"] == 0
+
+
+def test_truncation_and_overlap_discrepancies_add_up():
+    # 2 missing positions AND 1 in-overlap alteration: the statistic is
+    # their sum, and the first discrepancy is the in-overlap one.
+    expected = regenerate_allocation(COMPLETE)
+    reported = list(expected[:4])
+    reported[1] = 1 - reported[1]
+    result = verify_allocation(COMPLETE, reported)
+    assert result.statistic.value == 3
+    assert dict(result.details)["first_discrepancy_index"] == 1
+
+
 def test_wrong_seed_does_not_regenerate():
     other = AllocationSpec(algorithm="complete", seed=2, arm_counts=(50, 50))
     mine = AllocationSpec(algorithm="complete", seed=1, arm_counts=(50, 50))
@@ -215,6 +260,31 @@ def test_numpy_integers_are_rejected():
 def test_seed_must_be_python_int(bad_seed):
     with pytest.raises(TypeError):
         AllocationSpec(algorithm="complete", seed=bad_seed, arm_counts=(3, 3))
+
+
+@pytest.mark.parametrize("bad", [3.0, True, "3", None])
+def test_arm_counts_entries_must_be_python_ints(bad):
+    with pytest.raises(TypeError):
+        AllocationSpec(algorithm="complete", seed=1, arm_counts=(bad, 3))
+
+
+@pytest.mark.parametrize("bad", [1.0, True, "1", None])
+def test_block_ratio_entries_must_be_python_ints(bad):
+    with pytest.raises(TypeError):
+        AllocationSpec(
+            algorithm="permuted_block",
+            seed=1,
+            block_ratio=(bad, 1),
+            n_participants=8,
+        )
+
+
+@pytest.mark.parametrize("bad_code", [-1, 2, 99])
+def test_out_of_range_reported_codes_are_rejected(bad_code):
+    reported = list(regenerate_allocation(COMPLETE))
+    reported[2] = bad_code
+    with pytest.raises(ValueError):
+        verify_allocation(COMPLETE, reported)
 
 
 # --- Spec validation: every declared failure mode ------------------------------
