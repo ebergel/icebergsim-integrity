@@ -71,8 +71,7 @@ trained on the exam. IST exists so honest texture is learned from
   - **Registry:** (IST-1 predates ISRCTN; cite the Lancet 1997 report)
 - **Mirror:** github.com/ebergel/ist-1-database (public; ODC-By;
   README + LICENSE + NOTICE present)
-- **Commit:** [FILL: run `git rev-parse HEAD` in the mirror, or copy the
-  latest commit hash from the repo's commit list]
+- **Commit:** 24584c68d54e8f15c6fa71bd508483b6205ff832
 - **Data file:** data/IST_corrected.csv (the corrected version
   incorporating the 2012 erratum — authoritative)
   - **SHA-256:** a350aed2329bbcde23c05caaa96b9275b44b017adecc2fd02231d590454695d5
