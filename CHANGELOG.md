@@ -17,6 +17,11 @@ Newest first. One line per version per document (SOP-DOCS.md §4).
 - icebergsim-integrity **0.1.0** — package born: pyproject, src layout,
   pytest wired; icebergsim-rct consumed as a git dependency, pinned in
   uv.lock at `5d439b2a` (L9).
+- anomaly-output schema **0.1.0** — frozen pure-core types (L1, L2, L12):
+  Regime with exactly two values; mandatory statistic + reference
+  distribution + false-alarm context; no booleans on results; verdict
+  vocabulary banned from output identifiers. Constitutional tests:
+  test_output_schema.py, test_forbidden_vocabulary.py.
 - CI live — `.github/workflows/constitutional.yml`: constitutional tests
   on every push and PR (plus ruff, mypy). Marking the job *required* is
   branch protection — EB's platform layer, flagged in the workflow header.
