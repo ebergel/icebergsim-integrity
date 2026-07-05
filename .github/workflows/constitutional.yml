@@ -19,6 +19,15 @@ jobs:
       - run: uv sync --locked
       - run: uv run pytest tests/constitutional/ -v
 
+  tests:
+    name: full test suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --locked
+      - run: uv run pytest -q
+
   ruff:
     name: ruff (lint)
     runs-on: ubuntu-latest

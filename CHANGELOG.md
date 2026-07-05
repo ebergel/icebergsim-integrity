@@ -17,6 +17,13 @@ Newest first. One line per version per document (SOP-DOCS.md §4).
 - icebergsim-integrity **0.1.0** — package born: pyproject, src layout,
   pytest wired; icebergsim-rct consumed as a git dependency, pinned in
   uv.lock at `5d439b2a` (L9).
+- seed kernel **0.1.0** — **PENDING EB ACCEPTANCE** (L5: freeze begins at
+  his yes). Regenerates allocation from the committed seed over PCG64's
+  raw stream with the kernel's own integer algorithms (rejection-sampled
+  bounds, Fisher–Yates); complete + permuted-block; integer-exact
+  comparison; result = discrepancy count, regime verification, exact by
+  construction. No floating point in the module, enforced by test.
+  Golden vectors pinned. tests/kernel/: exhaustive suite.
 - anomaly-output schema **0.1.0** — frozen pure-core types (L1, L2, L12):
   Regime with exactly two values; mandatory statistic + reference
   distribution + false-alarm context; no booleans on results; verdict
